@@ -19,7 +19,7 @@ spec:
         - name: gke-test-back
           image: gcr.io/PROJECT_ID/IMAGE_BACK:TAG
           ports:
-            - containerPort: 3000
+            - containerPort: 8080
 ---
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler

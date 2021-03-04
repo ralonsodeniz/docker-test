@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - deployment-db.yml
-  - deployment-front.yml
-  - deployment-back.yml
-  - service-db.yml
-  - service-back.yml
-  - service-front.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: gke-test-db-service
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    app: gke-test-db
