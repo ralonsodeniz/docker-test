@@ -20,10 +20,20 @@ spec:
           image: gcr.io/PROJECT_ID/IMAGE_FRONT:TAG
           ports:
             - containerPort: 3000
+          resources:
+            requests:
+              cpu: 100m
+            limits:
+              cpu: 100m
         - name: gke-test-front-2
           image: gcr.io/PROJECT_ID/IMAGE_FRONT:TAG
           ports:
             - containerPort: 3000
+          resources:
+            requests:
+              cpu: 100m
+            limits:
+              cpu: 100m
 ---
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
