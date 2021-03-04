@@ -16,7 +16,7 @@ const router = express.Router();
 router.post('/topics', postTopic);
 router.get('/topics', getTopics);
 router.delete('/topics/:name', deleteTopic);
-app.use('/api', router);
+app.use(router);
 
 app.listen(port, () => {
   console.log(`Server up and running on port ${port}`);
