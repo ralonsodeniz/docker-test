@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gke-test-back
+  namespace: default
+  labels:
+    app: gke-test-back
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gke-test-back
+  template:
+    metadata:
+      labels:
+        app: gke-test-back
+    spec:
+      containers:
+        - name: gke-test-back
+          image: gcr.io/PROJECT_ID/IMAGE_BACK:TAG
+          ports:
+            - containerPort: 3000
+        - name: gke-test-back-2
+          image: gcr.io/PROJECT_ID/IMAGE_BACK:TAG
+          ports:
+            - containerPort: 3000
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: gke-test-back-hpa-zs1p
+  namespace: default
+  labels:
+    app: gke-test-back
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: gke-test-back
+    apiVersion: apps/v1
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 80

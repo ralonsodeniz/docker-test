@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gke-test-db
+  namespace: default
+  labels:
+    app: gke-test-db
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gke-test-db
+  template:
+    metadata:
+      labels:
+        app: gke-test-db
+    spec:
+      containers:
+        - name: gke-test-db
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          volumes:
+            - mongo-data:/data/db
+        - name: gke-test-db-2
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+          volumes:
+            - mongo-data:/data/db
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: gke-test-db-hpa-zs1p
+  namespace: default
+  labels:
+    app: gke-test-db
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: gke-test-db
+    apiVersion: apps/v1
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 80
