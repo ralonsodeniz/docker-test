@@ -64,20 +64,20 @@ jobs:
 #      - name: Publish front
 #        run: |-
 #          docker push "gcr.io/$PROJECT_ID/$IMAGE_FRONT:$GITHUB_SHA"
-      # Build the Docker back image
-      - name: Build back
-        working-directory: ./backend
-        run: |-
-          docker build \
-            --tag "gcr.io/$PROJECT_ID/$IMAGE_BACK:$GITHUB_SHA" \
-            --build-arg GITHUB_SHA="$GITHUB_SHA" \
-            --build-arg GITHUB_REF="$GITHUB_REF" \
-            .
-      # Push the Docker back image to Google Container Registry
-      - name: Publish back
-        working-directory: ./backend
-        run: |-
-          docker push "gcr.io/$PROJECT_ID/$IMAGE_BACK:$GITHUB_SHA"
+#      # Build the Docker back image
+#      - name: Build back
+#        working-directory: ./backend
+#        run: |-
+#          docker build \
+#            --tag "gcr.io/$PROJECT_ID/$IMAGE_BACK:$GITHUB_SHA" \
+#            --build-arg GITHUB_SHA="$GITHUB_SHA" \
+#            --build-arg GITHUB_REF="$GITHUB_REF" \
+#            .
+#      # Push the Docker back image to Google Container Registry
+#      - name: Publish back
+#        working-directory: ./backend
+#        run: |-
+#          docker push "gcr.io/$PROJECT_ID/$IMAGE_BACK:$GITHUB_SHA"
       # Set up kustomize
       - name: Set up Kustomize
         run: |-
@@ -85,6 +85,14 @@ jobs:
           chmod u+x ./kustomize
       # Deploy the Docker images to the GKE cluster
       - name: Deploy
+#        run: |-
+#          ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE_FRONT:TAG=gcr.io/$PROJECT_ID/$IMAGE_FRONT:$GITHUB_SHA
+#          ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE_BACK:TAG=gcr.io/$PROJECT_ID/$IMAGE_BACK:$GITHUB_SHA
+#          ./kustomize build . | kubectl apply -f -
+#          kubectl rollout status deployment/$DEPLOYMENT_NAME_DB
+#          kubectl rollout status deployment/$DEPLOYMENT_NAME_BACK
+#          kubectl rollout status deployment/$DEPLOYMENT_NAME_FRONT
+#          kubectl get services -o wide
         run: |-
           ./kustomize build . | kubectl apply -f -
           kubectl rollout status deployment/$DEPLOYMENT_NAME_DB

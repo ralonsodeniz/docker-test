@@ -6,7 +6,7 @@ metadata:
   labels:
     app: gke-test-back
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: gke-test-back
@@ -20,20 +20,6 @@ spec:
           image: gcr.io/PROJECT_ID/IMAGE_BACK:TAG
           ports:
             - containerPort: 3000
-          resources:
-            requests:
-              cpu: 100m
-            limits:
-              cpu: 100m
-        - name: gke-test-back-2
-          image: gcr.io/PROJECT_ID/IMAGE_BACK:TAG
-          ports:
-            - containerPort: 3000
-          resources:
-            requests:
-              cpu: 100m
-            limits:
-              cpu: 100m
 ---
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
