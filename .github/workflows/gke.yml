@@ -23,7 +23,9 @@ env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: gke-test
   GKE_REGION: europe-west1
-  DEPLOYMENT_NAME: gke-test
+  DEPLOYMENT_NAME_FRONT: gke-test-front
+  DEPLOYMENT_NAME_BACK: gke-test-back
+  DEPLOYMENT_NAME_DB: gke-test-db
   IMAGE_FRONT: gke-test-front
   IMAGE_BACK: gke-test-back
 
@@ -87,5 +89,7 @@ jobs:
           ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE_FRONT:TAG=gcr.io/$PROJECT_ID/$IMAGE_FRONT:$GITHUB_SHA
           ./kustomize edit set image gcr.io/PROJECT_ID/IMAGE_BACK:TAG=gcr.io/$PROJECT_ID/$IMAGE_BACK:$GITHUB_SHA
           ./kustomize build . | kubectl apply -f -
-          kubectl rollout status deployment/$DEPLOYMENT_NAME
+          kubectl rollout status deployment/$DEPLOYMENT_NAME_FRONT
+          kubectl rollout status deployment/$DEPLOYMENT_NAME_BACK
+          kubectl rollout status deployment/$DEPLOYMENT_NAME_DB
           kubectl get services -o wide
