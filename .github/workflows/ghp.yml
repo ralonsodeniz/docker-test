@@ -11,8 +11,8 @@ on:
 env:
   FRONT_IMAGE_NAME: frontend
   BACK_IMAGE_NAME: backend
-  REPO: ${GITHUB_REPOSITORY,,}
-  SHA: ${GITHUB_SHA::7}
+  REPO: ${{ GITHUB_REPOSITORY,, }}
+  SHA: ${{ GITHUB_SHA::7 }}
 
 jobs:
   ci:
